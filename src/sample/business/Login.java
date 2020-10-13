@@ -20,7 +20,8 @@ import java.util.ResourceBundle;
 
 
 public class Login {
-    List<User> users = new ArrayList<>();
+    static List<User> users = new ArrayList<>();
+//    public static User user = new User();
 
     @FXML
     private TextField txtUsername;
@@ -33,6 +34,7 @@ public class Login {
 
     public void Submit(ActionEvent event) throws IOException {
         users = IOFile.readUserFromFile("users.dat");
+//        creatFile();
         String userName = txtUsername.getText();
         String password = txtPassword.getText();
         for (int i = 0; i < users.size(); i++) {
@@ -42,6 +44,7 @@ public class Login {
                 Scene management = new Scene(root);
                 primaryStage.setScene(management);
                 primaryStage.show();
+//                user = users.get(i);
                 break;
             }
             if (i == users.size() - 1){
@@ -53,13 +56,12 @@ public class Login {
             }
         }
     }
-//    public void creatFile(){
-//        User user = new User("winduno", "123456", "admin");
-//        users.add(new User("winduno", "123", "admin"));
-//        users.add(new User("winduno1", "123", "user"));
-//        users.add(new User("duong", "123", "user"));
-//        users.add(new User("duong1", "123", "user"));
-//        users.add(new User("minhnguyen", "123", "user"));
-//        IOFile.writeUserToFile(users, "users.dat");
-//    }
+    public void creatFile(){
+        users.add(new User("winduno", "123", "admin"));
+        users.add(new User("winduno1", "123", "user"));
+        users.add(new User("duong", "123", "user"));
+        users.add(new User("duong1", "123", "user"));
+        users.add(new User("minhnguyen", "123", "user"));
+        IOFile.writeUserToFile(users, "users.dat");
+    }
 }

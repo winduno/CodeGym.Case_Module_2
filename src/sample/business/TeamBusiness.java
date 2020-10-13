@@ -207,21 +207,21 @@ public class TeamBusiness {
 
     @FXML
     void initialize() {
-        assert txtPlayerName != null : "fx:id=\"txtPlayerName\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
-        assert txtPlayerNationality != null : "fx:id=\"txtPlayerNationality\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
-        assert txtPlayerBirthday != null : "fx:id=\"txtPlayerBirthday\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
-        assert txtPlayerHeight != null : "fx:id=\"txtPlayerHeight\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
-        assert txtPlayerWeight != null : "fx:id=\"txtPlayerWeight\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
-        assert btnChooseImage != null : "fx:id=\"btnChooseImage\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
-        assert txtPlayerNumber != null : "fx:id=\"txtPlayerNumber\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
-        assert btnAdd != null : "fx:id=\"btnAdd\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
-        assert btnEdit != null : "fx:id=\"btnEdit\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
-        assert btnRemove != null : "fx:id=\"btnRemove\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
-        assert btnSearch != null : "fx:id=\"btnRemove1\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
-        assert posColumn != null : "fx:id=\"posCollum\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
-        assert playerNameColumn != null : "fx:id=\"playerNameCollum\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
-        assert playerNumberColumn != null : "fx:id=\"playerNumberCollum\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
-        assert btnExit != null : "fx:id=\"btnExit\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
+//        assert txtPlayerName != null : "fx:id=\"txtPlayerName\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
+//        assert txtPlayerNationality != null : "fx:id=\"txtPlayerNationality\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
+//        assert txtPlayerBirthday != null : "fx:id=\"txtPlayerBirthday\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
+//        assert txtPlayerHeight != null : "fx:id=\"txtPlayerHeight\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
+//        assert txtPlayerWeight != null : "fx:id=\"txtPlayerWeight\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
+//        assert btnChooseImage != null : "fx:id=\"btnChooseImage\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
+//        assert txtPlayerNumber != null : "fx:id=\"txtPlayerNumber\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
+//        assert btnAdd != null : "fx:id=\"btnAdd\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
+//        assert btnEdit != null : "fx:id=\"btnEdit\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
+//        assert btnRemove != null : "fx:id=\"btnRemove\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
+//        assert btnSearch != null : "fx:id=\"btnRemove1\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
+//        assert posColumn != null : "fx:id=\"posCollum\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
+//        assert playerNameColumn != null : "fx:id=\"playerNameCollum\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
+//        assert playerNumberColumn != null : "fx:id=\"playerNumberCollum\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
+//        assert btnExit != null : "fx:id=\"btnExit\" was not injected: check your FXML file 'TeamBusiness.fxml'.";
 
         try{
             playersList = IOFile.readPlayerFromFile("Players.dat");
@@ -233,6 +233,10 @@ public class TeamBusiness {
         playerNumberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
         tableView.getItems().addAll(playersList);
         choiceBox.getItems().addAll(choiceBoxList);
-
     }
+
+//    boolean checkUser(){
+//        if (Login.user.getRole() == "admin") return true;
+//        else return false;
+//    }
 }
