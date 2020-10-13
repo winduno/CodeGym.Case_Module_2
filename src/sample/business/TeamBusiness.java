@@ -2,9 +2,7 @@ package sample.business;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.FileSystem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -22,9 +20,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import sample.models.FootballPlayer;
-
-import javax.swing.*;
-import javax.swing.filechooser.FileSystemView;
 
 public class TeamBusiness {
     List<FootballPlayer> playersList= new ArrayList();
@@ -231,6 +226,7 @@ public class TeamBusiness {
             playersList.remove(player);
             reloadTable();
             IOFile.writePlayerToFile(playersList, "Players.dat");
+            clearField();
         }
         else{
             Alert alert = new Alert(Alert.AlertType.WARNING);
