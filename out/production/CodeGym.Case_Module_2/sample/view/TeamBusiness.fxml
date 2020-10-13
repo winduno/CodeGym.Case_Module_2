@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="722.0" prefWidth="1186.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.business.TeamBusiness">
+   <children>
+      <ImageView fitHeight="731.0" fitWidth="1216.0" layoutX="-9.0" layoutY="-9.0" opacity="0.14" pickOnBounds="true">
+         <image>
+            <Image url="@MU.jpg" />
+         </image>
+      </ImageView>
+      <Pane prefHeight="198.0" prefWidth="831.0" style="-fx-background-color: #cc0000;">
+         <children>
+            <Text fill="WHITE" layoutX="248.0" layoutY="90.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="Manchester United">
+               <font>
+                  <Font name="System Bold" size="33.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="248.0" layoutY="133.0" stroke="#070707" strokeType="OUTSIDE" text="Team Management">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="147.0" fitWidth="140.0" layoutX="52.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@MU.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Label layoutX="45.0" layoutY="250.0" text="Player Name">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="45.0" layoutY="330.0" text="Player Nationality">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="45.0" layoutY="410.0" text="Player Birthday">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="45.0" layoutY="490.0" text="Player Height">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="45.0" layoutY="570.0" text="Player Weight">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="450.0" layoutY="490.0" text="Player Number">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="450.0" layoutY="570.0" text="Player Position">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtPlayerName" layoutX="220.0" layoutY="245.0" promptText="Player Name" />
+      <TextField fx:id="txtPlayerNationality" layoutX="220.0" layoutY="325.0" promptText="Player Nationality" />
+      <TextField fx:id="txtPlayerBirthday" layoutX="220.0" layoutY="405.0" promptText="Player Birthday" />
+      <TextField fx:id="txtPlayerHeight" layoutX="220.0" layoutY="485.0" promptText="Player Height" />
+      <TextField fx:id="txtPlayerWeight" layoutX="220.0" layoutY="565.0" promptText="Player Weight" />
+      <Button fx:id="btnChooseImage" layoutX="590.0" layoutY="430.0" mnemonicParsing="false" onAction="#chooseImage" text="Choose Image" />
+      <TextField fx:id="txtPlayerNumber" layoutX="590.0" layoutY="485.0" promptText="Player Number" />
+      <ComboBox fx:id="choiceBox" layoutX="590.0" layoutY="565.0" prefWidth="150.0" />
+      <Button fx:id="btnAdd" layoutX="45.0" layoutY="640.0" mnemonicParsing="false" onAction="#addPlayer" prefHeight="39.0" prefWidth="90.0" text="Add" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnEdit" layoutX="175.0" layoutY="640.0" mnemonicParsing="false" onAction="#editPlayer" prefHeight="39.0" prefWidth="90.0" text="Edit" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnRemove" layoutX="305.0" layoutY="640.0" mnemonicParsing="false" onAction="#removePlayer" prefHeight="39.0" prefWidth="107.0" text="Remove">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnSearch" layoutX="590.0" layoutY="640.0" mnemonicParsing="false" onAction="#searchPlayer" prefHeight="39.0" prefWidth="150.0" text="Search">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="198.0" fitWidth="278.0" layoutX="497.0" layoutY="220.0" pickOnBounds="true">
+         <image>
+            <Image url="@default.png" />
+         </image>
+      </ImageView>
+      <Pane layoutX="831.0" prefHeight="87.0" prefWidth="376.0" style="-fx-background-color: #666666;">
+         <children>
+            <Text fill="RED" layoutX="113.0" layoutY="55.0" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="2.0" text="Player List">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <TableView fx:id="tableView" layoutX="831.0" layoutY="87.0" opacity="0.65" prefHeight="503.0" prefWidth="376.0">
+        <columns>
+          <TableColumn fx:id="posCollum" prefWidth="61.0" text="Pos" />
+          <TableColumn fx:id="playerNameCollum" prefWidth="238.0" text="Player Name" />
+            <TableColumn fx:id="playerNumberCollum" prefWidth="76.0" text="Number" />
+        </columns>
+      </TableView>
+      <Button fx:id="btnExit" layoutX="1016.0" layoutY="640.0" mnemonicParsing="false" onAction="#exit" prefHeight="39.0" prefWidth="107.0" text="Exit">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
