@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class Main extends Application {
 
     public static void main(String[] args) {
@@ -13,15 +15,12 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("view/Login.fxml"));
-            Scene scene = new Scene(root);
-            primaryStage.setScene(scene);
-            primaryStage.setResizable(false);
-            primaryStage.show();
-        }catch  (Exception e){
-            e.printStackTrace();
-        }
+    public void start(Stage primaryStage) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("view/Login.fxml"));
+        Scene scene = new Scene(root);
+        primaryStage.setTitle("Login");
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
+        primaryStage.show();
     }
 }

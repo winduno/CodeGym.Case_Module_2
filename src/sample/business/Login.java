@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 
 public class Login {
     static List<User> users = new ArrayList<>();
-//    public static User user = new User();
+    public static User user = new User();
 
     @FXML
     private TextField txtUsername;
@@ -44,7 +44,7 @@ public class Login {
                 Scene management = new Scene(root);
                 primaryStage.setScene(management);
                 primaryStage.show();
-//                user = users.get(i);
+                user = users.get(i);
                 break;
             }
             if (i == users.size() - 1){

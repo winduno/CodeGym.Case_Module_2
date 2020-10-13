@@ -1,6 +1,7 @@
 package sample.business;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.FileSystem;
@@ -9,12 +10,17 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import sample.models.FootballPlayer;
 
 import javax.swing.*;
@@ -96,32 +102,40 @@ public class TeamBusiness {
 
     @FXML
     void addPlayer(ActionEvent event) {
-        FootballPlayer footballPlayer = new FootballPlayer();
-        footballPlayer.setName(txtPlayerName.getText());
-        footballPlayer.setNationality(txtPlayerNationality.getText());
-        footballPlayer.setDateOfBirth(txtPlayerBirthday.getText());
-        footballPlayer.setHeight(txtPlayerHeight.getText());
-        footballPlayer.setWeight(txtPlayerWeight.getText());
-        footballPlayer.setNumber(txtPlayerNumber.getText());
-        footballPlayer.setPosition(choiceBox.getSelectionModel().selectedItemProperty().getValue());
-        footballPlayer.setImagePath(imagePath);
-        for (FootballPlayer player : playersList) {
-            boolean exist = player.getName().equals(txtPlayerName.getText()) || player.getNumber().equals(txtPlayerNumber.getText());
-            boolean blank = txtPlayerName.getText().equals("") || txtPlayerNationality.getText().equals("") ||
-                    txtPlayerBirthday.getText().equals("") || txtPlayerHeight.getText().equals("") || txtPlayerWeight.getText().equals("") ||
-                    txtPlayerNumber.getText().equals("") || choiceBox.getSelectionModel().selectedItemProperty().getValue().equals("");
-            if (exist || blank){
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("System Information");
-                alert.setContentText("This player is exist or something is blank! Please try again");
-                alert.show();
-                return;
+        if (checkUser()){
+            FootballPlayer footballPlayer = new FootballPlayer();
+            footballPlayer.setName(txtPlayerName.getText());
+            footballPlayer.setNationality(txtPlayerNationality.getText());
+            footballPlayer.setDateOfBirth(txtPlayerBirthday.getText());
+            footballPlayer.setHeight(txtPlayerHeight.getText());
+            footballPlayer.setWeight(txtPlayerWeight.getText());
+            footballPlayer.setNumber(txtPlayerNumber.getText());
+            footballPlayer.setPosition(choiceBox.getSelectionModel().selectedItemProperty().getValue());
+            footballPlayer.setImagePath(imagePath);
+            for (FootballPlayer player : playersList) {
+                boolean exist = player.getName().equals(txtPlayerName.getText()) || player.getNumber().equals(txtPlayerNumber.getText());
+                boolean blank = txtPlayerName.getText().equals("") || txtPlayerNationality.getText().equals("") ||
+                        txtPlayerBirthday.getText().equals("") || txtPlayerHeight.getText().equals("") || txtPlayerWeight.getText().equals("") ||
+                        txtPlayerNumber.getText().equals("") || choiceBox.getSelectionModel().selectedItemProperty().getValue().equals("");
+                if (exist || blank){
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("System Information");
+                    alert.setContentText("This player is exist or something is blank! Please try again");
+                    alert.show();
+                    return;
+                }
             }
+            playersList.add(footballPlayer);
+            reloadTable();
+            IOFile.writePlayerToFile(playersList, "Players.dat");
+            clearField();
         }
-        playersList.add(footballPlayer);
-        reloadTable();
-        IOFile.writePlayerToFile(playersList, "Players.dat");
-        clearField();
+        else{
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Wrong");
+            alert.setContentText("You do not have right to do this");
+            alert.show();
+        }
     }
 
     public void clearField(){
@@ -153,18 +167,26 @@ public class TeamBusiness {
 
     @FXML
     void editPlayer(ActionEvent event) {
-        if (clickedIndex != -1){
-            playersList.get(clickedIndex).setName(txtPlayerName.getText());
-            playersList.get(clickedIndex).setNationality(txtPlayerNationality.getText());
-            playersList.get(clickedIndex).setDateOfBirth(txtPlayerBirthday.getText());
-            playersList.get(clickedIndex).setHeight(txtPlayerHeight.getText());
-            playersList.get(clickedIndex).setWeight(txtPlayerWeight.getText());
-            playersList.get(clickedIndex).setNumber(txtPlayerNumber.getText());
-            playersList.get(clickedIndex).setImagePath(imagePath);
-            playersList.get(clickedIndex).setPosition(choiceBox.getSelectionModel().selectedItemProperty().getValue());
-            reloadTable();
-            IOFile.writePlayerToFile(playersList, "Players.dat");
-            clearField();
+        if (checkUser()){
+            if (clickedIndex != -1){
+                playersList.get(clickedIndex).setName(txtPlayerName.getText());
+                playersList.get(clickedIndex).setNationality(txtPlayerNationality.getText());
+                playersList.get(clickedIndex).setDateOfBirth(txtPlayerBirthday.getText());
+                playersList.get(clickedIndex).setHeight(txtPlayerHeight.getText());
+                playersList.get(clickedIndex).setWeight(txtPlayerWeight.getText());
+                playersList.get(clickedIndex).setNumber(txtPlayerNumber.getText());
+                playersList.get(clickedIndex).setImagePath(imagePath);
+                playersList.get(clickedIndex).setPosition(choiceBox.getSelectionModel().selectedItemProperty().getValue());
+                reloadTable();
+                IOFile.writePlayerToFile(playersList, "Players.dat");
+                clearField();
+            }
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Wrong");
+            alert.setContentText("You do not have right to do this");
+            alert.show();
         }
     }
 
@@ -188,16 +210,34 @@ public class TeamBusiness {
     }
 
     @FXML
-    void exit(ActionEvent event) {
-
+    void exit(ActionEvent event) throws IOException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, " ", ButtonType.YES, ButtonType.NO);
+        alert.setHeaderText("You are returning LOGIN page...");
+        alert.setContentText("Continue??");
+        alert.showAndWait();
+        if(alert.getResult() == ButtonType.YES){
+            Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Parent root = FXMLLoader.load(getClass().getResource("../view/Login.fxml"));
+            Scene management = new Scene(root);
+            primaryStage.setScene(management);
+            primaryStage.show();
+        }
     }
 
     @FXML
     void removePlayer(ActionEvent event) {
-        FootballPlayer player = tableView.getSelectionModel().getSelectedItem();
-        playersList.remove(player);
-        reloadTable();
-        IOFile.writePlayerToFile(playersList, "Players.dat");
+        if (checkUser()){
+            FootballPlayer player = tableView.getSelectionModel().getSelectedItem();
+            playersList.remove(player);
+            reloadTable();
+            IOFile.writePlayerToFile(playersList, "Players.dat");
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Wrong");
+            alert.setContentText("You do not have right to do this");
+            alert.show();
+        }
     }
 
     @FXML
@@ -235,8 +275,8 @@ public class TeamBusiness {
         choiceBox.getItems().addAll(choiceBoxList);
     }
 
-//    boolean checkUser(){
-//        if (Login.user.getRole() == "admin") return true;
-//        else return false;
-//    }
+    boolean checkUser(){
+        if (Login.user.getRole().equals("admin")) return true;
+        else return false;
+    }
 }
