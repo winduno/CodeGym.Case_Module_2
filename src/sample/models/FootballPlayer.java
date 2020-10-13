@@ -1,6 +1,8 @@
 package sample.models;
 
-public class FootballPlayer {
+import java.io.Serializable;
+
+public class FootballPlayer implements Serializable {
     private String playerID;
     private String passPort;
     private String name;
@@ -11,12 +13,13 @@ public class FootballPlayer {
     private String number;
     private String position;
     private static int id = 0;
+    private String imagePath;
 
     public FootballPlayer (){
     }
 
     public FootballPlayer(String name, String nationality, String dateOfBirth, String height,
-                          String weight, String number, String position) {
+                          String weight, String number, String position, String imagePath) {
 
         this.playerID = String.valueOf(id += 1);
         this.name = name;
@@ -26,6 +29,15 @@ public class FootballPlayer {
         this.weight = weight;
         this.number = number;
         this.position = position;
+        this.imagePath = imagePath;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public String getIdPassPort() {
