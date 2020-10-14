@@ -17,12 +17,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.models.FootballPlayer;
 
 public class TeamBusiness {
-    List<FootballPlayer> playersList= new ArrayList();
+    static List<FootballPlayer> playersList= new ArrayList();
     String imagePath = " ";
     int clickedIndex;
 
@@ -88,7 +90,7 @@ public class TeamBusiness {
 
     String[] choiceBoxList = {"GK", "DF", "MF", "ST"};
 
-    public void reloadTable(){
+    public void reloadTable(List<FootballPlayer> playersList){
         tableView.getItems().clear();
         for (FootballPlayer player : playersList) {
             tableView.getItems().add(player);
@@ -107,21 +109,9 @@ public class TeamBusiness {
             footballPlayer.setNumber(txtPlayerNumber.getText());
             footballPlayer.setPosition(choiceBox.getSelectionModel().selectedItemProperty().getValue());
             footballPlayer.setImagePath(imagePath);
-            for (FootballPlayer player : playersList) {
-                boolean exist = player.getName().equals(txtPlayerName.getText()) || player.getNumber().equals(txtPlayerNumber.getText());
-                boolean blank = txtPlayerName.getText().equals("") || txtPlayerNationality.getText().equals("") ||
-                        txtPlayerBirthday.getText().equals("") || txtPlayerHeight.getText().equals("") || txtPlayerWeight.getText().equals("") ||
-                        txtPlayerNumber.getText().equals("") || choiceBox.getSelectionModel().selectedItemProperty().getValue().equals("");
-                if (exist || blank){
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("System Information");
-                    alert.setContentText("This player is exist or something is blank! Please try again");
-                    alert.show();
-                    return;
-                }
-            }
+            if (!checkPlayer()) return;
             playersList.add(footballPlayer);
-            reloadTable();
+            reloadTable(playersList);
             IOFile.writePlayerToFile(playersList, "Players.dat");
             clearField();
         }
@@ -140,6 +130,7 @@ public class TeamBusiness {
         txtPlayerBirthday.clear();
         txtPlayerNationality.clear();
         txtPlayerName.clear();
+        choiceBox.setValue(null);
 
         File file = new File("src/sample/data/default.png");
         imagePath = file.toURI().toString();
@@ -160,10 +151,30 @@ public class TeamBusiness {
         }
     }
 
+    boolean checkPlayer(){
+        for (FootballPlayer player : playersList) {
+            boolean exist = player.getNumber().equals(txtPlayerNumber.getText());
+            boolean blank = txtPlayerName.getText().equals("") || txtPlayerNationality.getText().equals("") ||
+                    txtPlayerBirthday.getText().equals("") || txtPlayerHeight.getText().equals("") || txtPlayerWeight.getText().equals("") ||
+                    txtPlayerNumber.getText().equals("") || choiceBox.getSelectionModel().selectedItemProperty().getValue().equals("");
+            if (exist || blank){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("System Information");
+                alert.setContentText("This player is exist or something is blank! Please try again");
+                alert.show();
+                return false;
+            }
+        }
+        return true;
+    }
+
     @FXML
     void editPlayer(ActionEvent event) {
         if (checkUser()){
             if (clickedIndex != -1){
+                if (!checkPlayer()){
+                    return;
+                }
                 playersList.get(clickedIndex).setName(txtPlayerName.getText());
                 playersList.get(clickedIndex).setNationality(txtPlayerNationality.getText());
                 playersList.get(clickedIndex).setDateOfBirth(txtPlayerBirthday.getText());
@@ -172,7 +183,7 @@ public class TeamBusiness {
                 playersList.get(clickedIndex).setNumber(txtPlayerNumber.getText());
                 playersList.get(clickedIndex).setImagePath(imagePath);
                 playersList.get(clickedIndex).setPosition(choiceBox.getSelectionModel().selectedItemProperty().getValue());
-                reloadTable();
+                reloadTable(playersList);
                 IOFile.writePlayerToFile(playersList, "Players.dat");
                 clearField();
             }
@@ -207,6 +218,7 @@ public class TeamBusiness {
     @FXML
     void exit(ActionEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, " ", ButtonType.YES, ButtonType.NO);
+        alert.setTitle("CONFIRMATION!!");
         alert.setHeaderText("You are returning LOGIN page...");
         alert.setContentText("Continue??");
         alert.showAndWait();
@@ -222,9 +234,13 @@ public class TeamBusiness {
     @FXML
     void removePlayer(ActionEvent event) {
         if (checkUser()){
-            FootballPlayer player = tableView.getSelectionModel().getSelectedItem();
-            playersList.remove(player);
-            reloadTable();
+            FootballPlayer removePlayer = tableView.getSelectionModel().getSelectedItem();
+            for (FootballPlayer player : playersList) {
+                if (player.getNumber().equals(removePlayer.getNumber())){
+                    playersList.remove(player);
+                }
+            }
+            reloadTable(playersList);
             IOFile.writePlayerToFile(playersList, "Players.dat");
             clearField();
         }
@@ -237,8 +253,77 @@ public class TeamBusiness {
     }
 
     @FXML
-    void searchPlayer(ActionEvent event) {
+    void openSearchWindow(ActionEvent event) throws IOException {
+        Stage secondaryStage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("../view/Search.fxml"));
+        Scene search = new Scene(root);
+        secondaryStage.setTitle("Search");
+        secondaryStage.setScene(search);
+        secondaryStage.setX(((Node) event.getSource()).getScene().getWindow().getX() + 300);
+        secondaryStage.setY(((Node) event.getSource()).getScene().getWindow().getY() + 200);
+        secondaryStage.initModality(Modality.APPLICATION_MODAL);
+        secondaryStage.initOwner(((Node) event.getSource()).getScene().getWindow());
+        secondaryStage.setResizable(false);
+        secondaryStage.showAndWait();
+        searchPlayer(Search.playerName, Search.playerNumber, Search.playerPostition);
+    }
 
+    public void searchPlayer(String playerName, String playerNumber, String playerPosition){
+        ArrayList<FootballPlayer> searchResult = new ArrayList<>();
+        if (!playerNumber.equals("")){
+            for (FootballPlayer player : playersList) {
+                if (player.getNumber().equals(playerNumber)) {
+                    searchResult.add(player);
+                    break;
+                }
+            }
+        }
+        else if (!playerName.equals("")){
+            if (!playerPosition.equals("")){
+                for (FootballPlayer player : playersList) {
+                    if (player.getName().toLowerCase().contains(playerName) && player.getPosition().toLowerCase().equals(playerPosition)) {
+                        searchResult.add(player);
+                    }
+                }
+            }
+            else{
+                for (FootballPlayer player : playersList) {
+                    if (player.getName().toLowerCase().contains(playerName)) {
+                        searchResult.add(player);
+                    }
+                }
+            }
+        }
+        else {
+            if (!playerName.equals("")){
+                for (FootballPlayer player : playersList) {
+                    if (player.getName().equals(playerName) && player.getPosition().toLowerCase().equals(playerPosition)) {
+                        searchResult.add(player);
+                    }
+                }
+            }
+            else{
+                for (FootballPlayer player : playersList) {
+                    if (player.getPosition().toLowerCase().equals(playerPosition)) {
+                        searchResult.add(player);
+                    }
+                }
+            }
+        }
+        if (searchResult.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Wrong");
+            alert.setContentText("Player not found!!");
+            alert.show();
+        }
+        else {
+            reloadTable(searchResult);
+        }
+    }
+
+    @FXML
+    void loadPlayerList(ActionEvent event) {
+        reloadTable(playersList);
     }
 
     @FXML

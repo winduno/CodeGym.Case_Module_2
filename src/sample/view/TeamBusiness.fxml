@@ -97,7 +97,7 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="btnSearch" layoutX="590.0" layoutY="640.0" mnemonicParsing="false" onAction="#searchPlayer" prefHeight="39.0" prefWidth="150.0" text="Search">
+      <Button fx:id="btnSearch" layoutX="500.0" layoutY="640.0" mnemonicParsing="false" onAction="#openSearchWindow" prefHeight="39.0" prefWidth="140.0" text="Search">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
@@ -124,6 +124,11 @@
         </columns>
       </TableView>
       <Button fx:id="btnExit" layoutX="1016.0" layoutY="640.0" mnemonicParsing="false" onAction="#exit" prefHeight="39.0" prefWidth="107.0" text="Exit">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button layoutX="700.0" layoutY="640.0" mnemonicParsing="false" onAction="#loadPlayerList" prefHeight="39.0" prefWidth="140.0" text="Player List">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>

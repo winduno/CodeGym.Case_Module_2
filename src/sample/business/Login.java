@@ -43,6 +43,8 @@ public class Login {
                 Parent root = FXMLLoader.load(getClass().getResource("../view/TeamBusiness.fxml"));
                 Scene management = new Scene(root);
                 primaryStage.setScene(management);
+                primaryStage.setX(primaryStage.getX() - 200);
+                primaryStage.setY(primaryStage.getY() - 100);
                 primaryStage.show();
                 user = users.get(i);
                 break;
