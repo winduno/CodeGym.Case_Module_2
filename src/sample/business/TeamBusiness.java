@@ -115,7 +115,7 @@ public class TeamBusiness {
                 boolean exist = player.getNumber().equals(txtPlayerNumber.getText());
                 boolean blank = txtPlayerName.getText().equals("") || txtPlayerNationality.getText().equals("") ||
                         txtPlayerBirthday.getText().equals("") || txtPlayerHeight.getText().equals("") || txtPlayerWeight.getText().equals("") ||
-                        txtPlayerNumber.getText().equals("") || choiceBox.getSelectionModel().selectedItemProperty().getValue().equals("");
+                        txtPlayerNumber.getText().equals("") || choiceBox.getSelectionModel().isEmpty();
                 if (exist || blank){
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("System Information");
