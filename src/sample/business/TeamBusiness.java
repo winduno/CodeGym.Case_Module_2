@@ -25,6 +25,7 @@ import sample.models.FootballPlayer;
 
 public class TeamBusiness {
     static List<FootballPlayer> playersList= new ArrayList();
+    static List<FootballPlayer> currentList = new ArrayList<>();
     String imagePath = " ";
     int clickedIndex;
     String anchorNumber = "";
@@ -91,9 +92,9 @@ public class TeamBusiness {
 
     String[] choiceBoxList = {"GK", "DF", "MF", "ST"};
 
-    public void reloadTable(List<FootballPlayer> playersList){
+    public void reloadTable(){
         tableView.getItems().clear();
-        for (FootballPlayer player : playersList) {
+        for (FootballPlayer player : currentList) {
             tableView.getItems().add(player);
         }
     }
@@ -124,7 +125,8 @@ public class TeamBusiness {
                 }
             }
             playersList.add(footballPlayer);
-            reloadTable(playersList);
+            currentList = playersList;
+            reloadTable();
             IOFile.writePlayerToFile(playersList, "Players.dat");
             clearField();
         }
@@ -185,7 +187,6 @@ public class TeamBusiness {
     @FXML
     void editPlayer(ActionEvent event) {
         if (checkUser()){
-            if (clickedIndex != -1){
                 for (FootballPlayer player : playersList) {
                     boolean exist = player.getNumber().equals(txtPlayerNumber.getText()) && !player.getNumber().equals(anchorNumber);
                     boolean blank = txtPlayerName.getText().equals("") || txtPlayerNationality.getText().equals("") ||
@@ -207,10 +208,10 @@ public class TeamBusiness {
                 playersList.get(clickedIndex).setNumber(txtPlayerNumber.getText());
                 playersList.get(clickedIndex).setImagePath(imagePath);
                 playersList.get(clickedIndex).setPosition(choiceBox.getSelectionModel().selectedItemProperty().getValue());
-                reloadTable(playersList);
+                currentList = playersList;
+                reloadTable();
                 IOFile.writePlayerToFile(playersList, "Players.dat");
                 clearField();
-            }
         }
         else{
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -225,17 +226,17 @@ public class TeamBusiness {
         clickedIndex = -1;
         clickedIndex = tableView.getSelectionModel().getSelectedIndex();
         if (clickedIndex != -1){
-            txtPlayerNumber.setText(playersList.get(clickedIndex).getNumber());
-            txtPlayerWeight.setText(playersList.get(clickedIndex).getWeight());
-            txtPlayerHeight.setText(playersList.get(clickedIndex).getHeight());
-            txtPlayerBirthday.setText(playersList.get(clickedIndex).getDateOfBirth());
-            txtPlayerNationality.setText(playersList.get(clickedIndex).getNationality());
-            txtPlayerName.setText(playersList.get(clickedIndex).getName());
-            if (!playersList.get(clickedIndex).getImagePath().equals(" ")){
-                imagePath = playersList.get(clickedIndex).getImagePath();
+            txtPlayerNumber.setText(currentList.get(clickedIndex).getNumber());
+            txtPlayerWeight.setText(currentList.get(clickedIndex).getWeight());
+            txtPlayerHeight.setText(currentList.get(clickedIndex).getHeight());
+            txtPlayerBirthday.setText(currentList.get(clickedIndex).getDateOfBirth());
+            txtPlayerNationality.setText(currentList.get(clickedIndex).getNationality());
+            txtPlayerName.setText(currentList.get(clickedIndex).getName());
+            if (!currentList.get(clickedIndex).getImagePath().equals(" ")){
+                imagePath = currentList.get(clickedIndex).getImagePath();
                 imgPlayerImage.setImage(new Image(imagePath));
             }
-            choiceBox.getSelectionModel().select(playersList.get(clickedIndex).getPosition());
+            choiceBox.getSelectionModel().select(currentList.get(clickedIndex).getPosition());
             anchorNumber = txtPlayerNumber.getText();
         }
     }
@@ -262,12 +263,13 @@ public class TeamBusiness {
     void removePlayer(ActionEvent event) {
         if (checkUser()){
             FootballPlayer removePlayer = tableView.getSelectionModel().getSelectedItem();
-            for (FootballPlayer player : playersList) {
-                if (player.getNumber().equals(removePlayer.getNumber())){
-                    playersList.remove(player);
+            for (int i = 0; i < playersList.size(); i++) {
+                if (removePlayer.getNumber().equals(playersList.get(i).getNumber())){
+                    playersList.remove(playersList.get(i));
                 }
             }
-            reloadTable(playersList);
+            currentList = playersList;
+            reloadTable();
             IOFile.writePlayerToFile(playersList, "Players.dat");
             clearField();
         }
@@ -344,13 +346,16 @@ public class TeamBusiness {
             alert.show();
         }
         else {
-            reloadTable(searchResult);
+            currentList = searchResult;
+            reloadTable();
+//            searchResult.clear();
         }
     }
 
     @FXML
     void loadPlayerList(ActionEvent event) {
-        reloadTable(playersList);
+        currentList = playersList;
+        reloadTable();
     }
 
     @FXML
@@ -379,7 +384,8 @@ public class TeamBusiness {
         posColumn.setCellValueFactory(new PropertyValueFactory<>("position"));
         playerNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         playerNumberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
-        tableView.getItems().addAll(playersList);
+        currentList = playersList;
+        tableView.getItems().addAll(currentList);
         choiceBox.getItems().addAll(choiceBoxList);
     }
 
