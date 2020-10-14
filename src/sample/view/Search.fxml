@@ -42,7 +42,7 @@
          </font>
       </TextField>
       <ComboBox fx:id="searchChoices" layoutX="300.0" layoutY="230.0" prefHeight="37.0" prefWidth="213.0" />
-      <Button fx:id="btnSearchDetail" layoutX="198.0" layoutY="311.0" mnemonicParsing="false" onAction="#searchOnManagement" prefHeight="39.0" prefWidth="179.0" text="Search">
+      <Button fx:id="btnSearchDetail" defaultButton="true" layoutX="198.0" layoutY="311.0" mnemonicParsing="false" onAction="#searchOnManagement" prefHeight="39.0" prefWidth="179.0" text="Search">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>

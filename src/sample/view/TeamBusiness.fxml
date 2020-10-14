@@ -82,7 +82,7 @@
       <Button fx:id="btnChooseImage" layoutX="590.0" layoutY="430.0" mnemonicParsing="false" onAction="#chooseImage" text="Choose Image" />
       <TextField fx:id="txtPlayerNumber" layoutX="590.0" layoutY="485.0" promptText="Player Number" />
       <ComboBox fx:id="choiceBox" layoutX="590.0" layoutY="565.0" prefWidth="150.0" />
-      <Button fx:id="btnAdd" layoutX="45.0" layoutY="640.0" mnemonicParsing="false" onAction="#addPlayer" prefHeight="39.0" prefWidth="90.0" text="Add" textAlignment="CENTER">
+      <Button fx:id="btnAdd" defaultButton="true" layoutX="45.0" layoutY="640.0" mnemonicParsing="false" onAction="#addPlayer" prefHeight="39.0" prefWidth="90.0" text="Add" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>

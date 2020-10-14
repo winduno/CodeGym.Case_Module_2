@@ -27,6 +27,7 @@ public class TeamBusiness {
     static List<FootballPlayer> playersList= new ArrayList();
     String imagePath = " ";
     int clickedIndex;
+    String anchorNumber = "";
 
     @FXML
     private ResourceBundle resources;
@@ -109,7 +110,19 @@ public class TeamBusiness {
             footballPlayer.setNumber(txtPlayerNumber.getText());
             footballPlayer.setPosition(choiceBox.getSelectionModel().selectedItemProperty().getValue());
             footballPlayer.setImagePath(imagePath);
-            if (!checkPlayer()) return;
+            for (FootballPlayer player : playersList) {
+                boolean exist = player.getNumber().equals(txtPlayerNumber.getText());
+                boolean blank = txtPlayerName.getText().equals("") || txtPlayerNationality.getText().equals("") ||
+                        txtPlayerBirthday.getText().equals("") || txtPlayerHeight.getText().equals("") || txtPlayerWeight.getText().equals("") ||
+                        txtPlayerNumber.getText().equals("") || choiceBox.getSelectionModel().selectedItemProperty().getValue().equals("");
+                if (exist || blank){
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("System Information");
+                    alert.setContentText("This player is exist or something is blank! Please try again");
+                    alert.show();
+                    return;
+                }
+            }
             playersList.add(footballPlayer);
             reloadTable(playersList);
             IOFile.writePlayerToFile(playersList, "Players.dat");
@@ -152,6 +165,7 @@ public class TeamBusiness {
     }
 
     boolean checkPlayer(){
+
         for (FootballPlayer player : playersList) {
             boolean exist = player.getNumber().equals(txtPlayerNumber.getText());
             boolean blank = txtPlayerName.getText().equals("") || txtPlayerNationality.getText().equals("") ||
@@ -172,8 +186,18 @@ public class TeamBusiness {
     void editPlayer(ActionEvent event) {
         if (checkUser()){
             if (clickedIndex != -1){
-                if (!checkPlayer()){
-                    return;
+                for (FootballPlayer player : playersList) {
+                    boolean exist = player.getNumber().equals(txtPlayerNumber.getText()) && !player.getNumber().equals(anchorNumber);
+                    boolean blank = txtPlayerName.getText().equals("") || txtPlayerNationality.getText().equals("") ||
+                            txtPlayerBirthday.getText().equals("") || txtPlayerHeight.getText().equals("") || txtPlayerWeight.getText().equals("") ||
+                            txtPlayerNumber.getText().equals("") || choiceBox.getSelectionModel().selectedItemProperty().getValue().equals("");
+                    if (exist || blank){
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("System Information");
+                        alert.setContentText("This player is exist or something is blank! Please try again");
+                        alert.show();
+                        return;
+                    }
                 }
                 playersList.get(clickedIndex).setName(txtPlayerName.getText());
                 playersList.get(clickedIndex).setNationality(txtPlayerNationality.getText());
@@ -212,6 +236,7 @@ public class TeamBusiness {
                 imgPlayerImage.setImage(new Image(imagePath));
             }
             choiceBox.getSelectionModel().select(playersList.get(clickedIndex).getPosition());
+            anchorNumber = txtPlayerNumber.getText();
         }
     }
 
@@ -227,6 +252,8 @@ public class TeamBusiness {
             Parent root = FXMLLoader.load(getClass().getResource("../view/Login.fxml"));
             Scene management = new Scene(root);
             primaryStage.setScene(management);
+            primaryStage.setX(primaryStage.getX() + 200);
+            primaryStage.setY(primaryStage.getY() + 100);
             primaryStage.show();
         }
     }
